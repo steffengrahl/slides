@@ -37,6 +37,31 @@ class Presentation
         return $presentations;
     }
     
+    public static function findOneByName(string $name)
+    {
+        $presentation = [];
+        $directory    = __DIR__ . '/../../data/slides';
+        $dh           = opendir($directory);
+        
+        while (false !== ($entry = readdir($dh))) {
+            if (
+                $entry === '.'
+                || $entry === '..'
+                || is_dir($directory . DIRECTORY_SEPARATOR . $entry)
+            ) {
+                continue;
+            }
+            
+            $fileName = str_replace(['_', '.md'], [' ', ''], $entry);
+            
+            if ($name === $fileName) {
+                break;
+            }
+        }
+        
+        return new Presentation($entry);
+    }
+    
     /**
      * @return string
      */
