@@ -1,0 +1,57 @@
+@import "reset.css";
+
+* { box-sizing: border-box }
+body {
+    min-height: 100vh;
+    overflow-y: hidden;
+}
+main {
+    height: 100vh;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    display: flex;
+}
+.slide {
+    height: 100vh;
+    min-width: 100vw;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    scroll-snap-align: start;
+}
+.slide.title h1 {
+    margin: auto;
+    font-size: 3rem;
+}
+.slide header {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-basis: 3rem;
+}
+.slide header h2 {
+    font-size: 1.5rem;
+    line-height: 3rem;
+    padding-left: 1rem;
+}
+.slide header .slide-number {
+    padding: 0 1rem;
+    line-height: 3rem;
+    text-align: center;
+}
+.slide .slide-content {
+    flex-basis: calc(100vh - 4.5rem);
+    display: flex;
+}
+.slide .slide-content > * {
+    margin: auto;
+    max-width: 62.5%;
+}
+.slide footer {
+    flex-basis: 1.5rem;
+    padding: .5rem 1rem;
+    font-size: .9rem;
+}
