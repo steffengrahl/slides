@@ -18,9 +18,9 @@ if ( ! empty($_GET['presentation'])) {
     $html    = \Michelf\Markdown::defaultTransform($content);
     $dom     = new DOMDocument();
     $dom->loadHTML($html);
-    $elements                 = elementToObject($dom->documentElement)['children'][0]['children'];
-    $elementsCount            = count($elements);
-    $title                    = array_filter($elements, static function ($element) {
+    $elements      = elementToObject($dom->documentElement)['children'][0]['children'];
+    $elementsCount = count($elements);
+    $title         = array_filter($elements, static function ($element) {
         return $element['tag'] === 'h1';
     });
     $page          = [
@@ -31,7 +31,7 @@ if ( ! empty($_GET['presentation'])) {
     $slide = ['content' => ''];
     foreach ($elements as $key => $element) {
         if ($element['tag'] === 'h2') {
-            if ( ! empty($slide)) {
+            if ( ! empty($slide['content'])) {
                 $page['content'][] = $slide;
             }
             $slide = [
@@ -55,7 +55,7 @@ if ( ! empty($_GET['presentation'])) {
             $slide['content'] .= '</' . $element['tag'] . '>';
         }
         
-        if ( !empty($slide) && $key+1 === $elementsCount) {
+        if ( ! empty($slide['content']) && $key+1 === $elementsCount) {
             $page['content'][] = $slide;
         }
     }
