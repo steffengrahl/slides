@@ -4,75 +4,65 @@ namespace App\Model;
 
 class Presentation
 {
-    /**
-     * @var string
-     */
-    private $fileName;
-    /**
-     * @var string
-     */
-    private $title;
-    
-    /**
-     * @param string $fileName
-     */
-    public function __construct(string $fileName)
+    protected const SLIDES_STORAGE = __DIR__ . '/../../slides';
+    protected const SLIDES_FILE_NAME = 'presentation.md';
+
+    private string $fileName;
+    private string $title;
+
+    public function __construct(string $fileName, string $title)
     {
         $this->fileName = $fileName;
-        $this->title    = str_replace(['_', '.md'], [' ', ''], $fileName);
+        $this->title = $title;
     }
-    
+
     /**
-     * @return array|Presentation[]
+     * @return array<int, Presentation>
      */
     public static function findAll(): array
     {
         $presentations = [];
-        $files         = array_diff(scandir(__DIR__ . '/../../data/slides'), ['.', '..']);
-        
-        foreach ($files as $file) {
-            $presentations[] = new Presentation($file);
-        }
-        
-        return $presentations;
-    }
-    
-    public static function findOneByName(string $name)
-    {
-        $presentation = [];
-        $directory    = __DIR__ . '/../../data/slides';
-        $dh           = opendir($directory);
-        
-        while (false !== ($entry = readdir($dh))) {
-            if (
-                $entry === '.'
-                || $entry === '..'
-                || is_dir($directory . DIRECTORY_SEPARATOR . $entry)
-            ) {
+
+        $storage = array_diff(scandir(self::SLIDES_STORAGE), ['.', '..']);
+
+        foreach ($storage as $item) {
+            if (!is_dir(self::SLIDES_STORAGE . DIRECTORY_SEPARATOR . $item)) {
                 continue;
             }
-            
-            $fileName = str_replace(['_', '.md'], [' ', ''], $entry);
-            
-            if ($name === $fileName) {
-                break;
+
+            $slidesFullFileName = self::SLIDES_STORAGE . DIRECTORY_SEPARATOR . $item . DIRECTORY_SEPARATOR
+                . self::SLIDES_FILE_NAME;
+
+            if (!file_exists($slidesFullFileName)) {
+                continue;
             }
+
+            $name = str_replace('_', ' ', $item);
+
+            $presentations[] = new Presentation($item, $name);
         }
-        
-        return new Presentation($entry);
+
+        return $presentations;
     }
-    
-    /**
-     * @return string
-     */
+
+    public static function findOneByName(string $name): Presentation
+    {
+        $fullFilePath = self::SLIDES_STORAGE . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . self::SLIDES_FILE_NAME;
+
+        if (!file_exists($fullFilePath)) {
+            throw new \InvalidArgumentException('Can\'t find the presentation file');
+        }
+
+        $title = str_replace('_', ' ', $name);
+
+        return new Presentation($name, $title);
+    }
+
     public function getFileName(): string
     {
         return $this->fileName;
     }
-    
-    /**
-     * @return string
-     */
+
     public function getTitle(): string
     {
         return $this->title;

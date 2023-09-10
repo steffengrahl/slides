@@ -10,11 +10,13 @@ if (empty($_GET['presentation'])) {
     $presentations = \App\Model\Presentation::findAll();
 }
 
-if ( ! empty($_GET['presentation'])) {
+$paramPresentation = $_GET['presentation'] ?? '';
+
+if ($paramPresentation !== '') {
     $template     = __DIR__ . '/../templates/default/presentation.html.php';
-    $presentation = \App\Model\Presentation::findOneByName(urldecode($_GET['presentation']));
+    $presentation = \App\Model\Presentation::findOneByName(urldecode($paramPresentation));
     
-    $content = file_get_contents(__DIR__ . '/../data/slides/' . $presentation->getFileName());
+    $content = file_get_contents(__DIR__ . '/../slides/' . $presentation->getFileName() . '/presentation.md');
     $html    = \Michelf\Markdown::defaultTransform($content);
     $dom     = new DOMDocument();
     $dom->loadHTML($html);
