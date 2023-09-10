@@ -3,7 +3,7 @@
 <head>
     <title><?= $page['title'] ?? '' ?></title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/base_struct.css">
+    <link rel="stylesheet" href="css/styles.css?cb<?= time() ?>">
     <style>
     body {
         font-size: 32px;

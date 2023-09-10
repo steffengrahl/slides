@@ -1,0 +1,24 @@
+.overview {
+    margin: 4vh auto;
+    width: 100%;
+    max-width: 62.5vw;
+}
+.overview header {}
+.overview header h2 {
+    font-size: 2rem;
+    line-height: 1.25em;
+}
+.overview .presentations {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+.overview .presentations .card {
+    font-size: 1.33rem;
+    min-width: 240px;
+    max-width: 320px;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
