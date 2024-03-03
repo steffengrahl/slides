@@ -3,7 +3,12 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
+const BASE_TEMPLATE_APP = __DIR__ . '/../templates/app/base.html.php';
+const BASE_TEMPLATE_PRESENTATION = __DIR__ . '/../templates/default/base.html.php';
+
 include __DIR__ . '/../vendor/autoload.php';
+
+$baseTemplateFilePath = BASE_TEMPLATE_APP;
 
 if (empty($_GET['presentation'])) {
     $template      = __DIR__ . '/../templates/app/organisms/list-of-slides.html.php';
@@ -59,8 +64,8 @@ $paramPresentation = $_GET['presentation'] ?? '';
 
 if ($paramPresentation !== '') {
     $template     = __DIR__ . '/../templates/default/presentation.html.php';
-    $presentation = \App\Model\Presentation::findOneByName(urldecode($paramPresentation));
-    
+    $presentation = \App\Model\Presentation::findOne(urldecode($paramPresentation));
+
     $content = file_get_contents(__DIR__ . '/../slides/' . $presentation->getFileName() . '/presentation.md');
     $html    = \Michelf\Markdown::defaultTransform($content);
     $dom     = new DOMDocument();
@@ -108,9 +113,10 @@ if ($paramPresentation !== '') {
     }
     
     $page['slideCount'] = count($page['content'] ?? []);
+    $baseTemplateFilePath = BASE_TEMPLATE_PRESENTATION;
 }
 
-include __DIR__ . '/../templates/app/base.html.php';
+include $baseTemplateFilePath;
 
 /**
  * @param DOMElement $element
