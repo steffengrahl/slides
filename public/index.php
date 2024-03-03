@@ -59,8 +59,8 @@ $paramPresentation = $_GET['presentation'] ?? '';
 
 if ($paramPresentation !== '') {
     $template     = __DIR__ . '/../templates/default/presentation.html.php';
-    $presentation = \App\Model\Presentation::findOneByName(urldecode($paramPresentation));
-    
+    $presentation = \App\Model\Presentation::findOne(urldecode($paramPresentation));
+
     $content = file_get_contents(__DIR__ . '/../slides/' . $presentation->getFileName() . '/presentation.md');
     $html    = \Michelf\Markdown::defaultTransform($content);
     $dom     = new DOMDocument();
