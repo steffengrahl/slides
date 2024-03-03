@@ -1,3 +1,75 @@
-@import "reset.css";
-@import "base_struct.css";
-@import "overview.css";
+/*@import "reset.css";*/
+/*@import "base_struct.css";*/
+/*@import "overview.css";*/
+
+* { box-sizing: border-box }
+html {
+    background-color: #F2F2F2;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 18px/1.15em;
+    max-width: 45em;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 100vh;
+}
+.page-header {
+    padding: 1em 0;
+}
+h1, h2 {
+    margin: 0;
+    padding: 0;
+}
+main {
+    padding: 1.5em 0;
+}
+.slides-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 2em 1em;
+}
+.slide-preview-box {
+    border-top: 2px solid #212121;
+    border-bottom: 2px solid #212121;
+    flex-basis: calc(50% - .5em);
+}
+.slide-preview-box:last-child {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+.slide-preview-header {
+    padding: .25em 0;
+}
+.slide-preview-title {}
+.slide-preview-image {
+    margin: 0;
+    padding: 0;
+}
+.slide-preview-image img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+.slide-preview-box .btn-add {
+    display: flex;
+    max-height: 100%;
+}
+.slide-preview-box .btn-add .icon {
+    display: inline-block;
+    margin: auto;
+    font-size: 8em;
+    color: #C2C2C2;
+}
+.btn {
+    text-decoration: none;
+    color: inherit;
+}

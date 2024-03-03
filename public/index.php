@@ -6,7 +6,7 @@ ini_set('display_errors', '1');
 include __DIR__ . '/../vendor/autoload.php';
 
 if (empty($_GET['presentation'])) {
-    $template      = __DIR__ . '/../templates/default/index.html.php';
+    $template      = __DIR__ . '/../templates/app/organisms/list-of-slides.html.php';
     $presentations = \App\Model\Presentation::findAll();
 }
 
@@ -65,7 +65,7 @@ if ($paramPresentation !== '') {
     $page['slideCount'] = count($page['content'] ?? []);
 }
 
-include __DIR__ . '/../templates/default/base.html.php';
+include __DIR__ . '/../templates/app/base.html.php';
 
 /**
  * @param DOMElement $element
