@@ -1,5 +1,5 @@
 <div class="slides-list">
-    <?php if ($slides !== []) : ?>
+    <?php if (($slides ?? []) !== []) : ?>
     <?php foreach ($slides as $slide) : ?>
     <?php include __DIR__ . '/../molecule/slide-preview-box.html.php' ?>
     <?php endforeach ?>
