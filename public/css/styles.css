@@ -23,6 +23,10 @@ body {
 .page-header {
     padding: 1em 0;
 }
+.page-title a {
+    color: inherit;
+    text-decoration: none;
+}
 h1, h2 {
     margin: 0;
     padding: 0;
@@ -83,6 +87,10 @@ form .btn {
     padding: .25em 0;
 }
 .slide-preview-title {}
+.slide-preview-title a {
+    color: inherit;
+    text-decoration: none;
+}
 .slide-preview-image {
     margin: 0;
     padding: 0;

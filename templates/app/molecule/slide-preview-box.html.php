@@ -1,7 +1,7 @@
 <section class="slide-preview-box">
   <header class="slide-preview-header">
     <h2 class="slide-preview-title">
-      <a href="?presentation=<?= urlencode($presentation->getFileName()) ?>">
+      <a href="?presentation=<?= urlencode($presentation->getFileName()) ?>" target="_blank">
           <?= $presentation->getTitle() ?>
       </a>
     </h2>
