@@ -8,7 +8,7 @@
 <body>
     <header class="page-header">
         <h1 class="page-title">
-            Your slides
+          <a href="index.php">Your slides</a>
         </h1>
     </header>
     <main>
