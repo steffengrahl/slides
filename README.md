@@ -37,6 +37,10 @@ This application is published under the [MIT License](LICENSE)
 Contributing
 ---
 
-Feel free to open an issue for feature requests or bugs. If you want to contribute something, please raise an issue before. 
+Feel free to open an issue for feature requests or bugs. If you want to contribute something, please raise an issue before.
+
+__RESOURCES__
+
+* [Styleguide](https://codepen.io/collection/dbzkxx)
 
 All help will be appreciated.
