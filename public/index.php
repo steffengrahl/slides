@@ -10,6 +10,51 @@ if (empty($_GET['presentation'])) {
     $presentations = \App\Model\Presentation::findAll();
 }
 
+if (($_GET['action'] ?? '') === 'create') {
+    $form = [
+        'fields' => [
+            'title' => [
+                'label' => 'Presentation Title',
+                'error' => '',
+                'required' => true,
+            ],
+        ],
+    ];
+
+    if (($_POST['btn-create'] ?? '0') === '1') {
+        $error = false;
+        $title = sanitizeUserInput(($_POST['title'] ?? ''));
+
+        if ($title === '') {
+            $form['fields']['title']['error'] = 'Field is required! Please provide a title for your presentation';
+            $error = true;
+        }
+
+        if (!$error) {
+            $folderName = date('YmdHis');
+            $presentationPath = __DIR__ . '/../slides/' . $folderName;
+
+            if ( ! mkdir($presentationPath) && ! is_dir($presentationPath)) {
+                throw new \RuntimeException(
+                    sprintf('Directory "%s" was not created', $presentationPath)
+                );
+            }
+
+            file_put_contents(
+                $presentationPath . DIRECTORY_SEPARATOR . 'presentation.md',
+                $title . PHP_EOL . '==='
+            );
+            file_put_contents(
+                $presentationPath . DIRECTORY_SEPARATOR . 'config.yaml',
+                'title: ' . $title . PHP_EOL . 'theme: ' . PHP_EOL
+            );
+            header('Location: index.php');
+        }
+    }
+
+    $template = __DIR__ . '/../templates/app/organisms/create-presentation-form.html.php';
+}
+
 $paramPresentation = $_GET['presentation'] ?? '';
 
 if ($paramPresentation !== '') {
@@ -99,4 +144,9 @@ function isImage($element): bool
     return isset($element['children'])
            && count($element['children']) === 1
            && $element['children'][0]['tag'] === 'img';
+}
+
+function sanitizeUserInput(string $input): string
+{
+    return trim(strip_tags($input));
 }
