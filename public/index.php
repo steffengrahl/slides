@@ -1,30 +1,41 @@
 <?php
 
+use App\Model\Presentation;
+use Michelf\Markdown;
+use Symfony\Component\Yaml\Yaml;
+
+use const App\Configuration\DIR_ROOT;
+use const App\Configuration\DIR_SLIDES;
+use const App\Configuration\DIR_TEMPLATES;
+
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-const BASE_TEMPLATE_APP = __DIR__ . '/../templates/app/base.html.php';
-const BASE_TEMPLATE_PRESENTATION = __DIR__ . '/../templates/default/base.html.php';
+require_once __DIR__ . '/../configuration.php';
 
-include __DIR__ . '/../vendor/autoload.php';
+const BASE_TEMPLATE_APP = DIR_TEMPLATES . '/app/base.html.php';
+const BASE_TEMPLATE_PRESENTATION = DIR_TEMPLATES . '/default/base.html.php';
+
+include DIR_ROOT . '/vendor/autoload.php';
 
 $baseTemplateFilePath = BASE_TEMPLATE_APP;
 
 if (empty($_GET['presentation'])) {
-    $template      = __DIR__ . '/../templates/app/organisms/list-of-slides.html.php';
-    $presentations = \App\Model\Presentation::findAll();
+    $template      = DIR_TEMPLATES . '/app/organisms/list-of-slides.html.php';
+    $presentations = Presentation::findAll();
 }
 
 if (($_GET['action'] ?? '') === 'edit') {
     $presentationId = (int) sanitizeUserInput(($_GET['presentation'] ?? ''));
     try {
-        $presentation = \App\Model\Presentation::findOne($presentationId);
+        $presentation = Presentation::findOne($presentationId);
     } catch (Exception) {
         $presentation = null;
     }
 
     if ($presentation !== null) {
-        $presentationText = file_get_contents(__DIR__ . '/../slides/' . $presentationId . '/presentation.md');
+        $presentationText = file_get_contents(
+            DIR_SLIDES . DIRECTORY_SEPARATOR . $presentationId . '/presentation.md');
         $form = [
             'fields' => [
                 'presentation' => [
@@ -49,26 +60,26 @@ if (($_GET['action'] ?? '') === 'edit') {
             }
 
             if (!$error) {
-                file_put_contents(__DIR__ . '/../slides/' . $presentationId . '/presentation.md', $presentationText);
+                file_put_contents(
+                    DIR_SLIDES . DIRECTORY_SEPARATOR . $presentationId
+                    . '/presentation.md', $presentationText
+                );
 
                 $title = trim(
                     substr(
                         $presentationText, 0, strpos($presentationText, PHP_EOL)
                     )
                 );
-                $config = \Symfony\Component\Yaml\Yaml::parseFile(
-                    __DIR__ . '/../slides/' . $presentationId . '/config.yaml'
-                );
+                $configFilePath = DIR_SLIDES . DIRECTORY_SEPARATOR . $presentationId
+                    . '/config.yaml';
+                $config = Yaml::parseFile($configFilePath);
                 $config['title'] = $title;
-                file_put_contents(
-                    __DIR__ . '/../slides/' . $presentationId . '/config.yaml',
-                    \Symfony\Component\Yaml\Yaml::dump($config)
-                );
+                file_put_contents($configFilePath, Yaml::dump($config));
                 header('Location: index.php');
             }
         }
 
-        $template = __DIR__ . '/../templates/app/organisms/edit-presentation-form.html.php';
+        $template = DIR_TEMPLATES . '/app/organisms/edit-presentation-form.html.php';
     } else {
         $page = [
             'flashMessage' => [
@@ -79,7 +90,7 @@ if (($_GET['action'] ?? '') === 'edit') {
                 ),
             ]
         ];
-        $template = __DIR__ . '/../templates/app/organisms/list-of-slides.html.php';
+        $template = DIR_TEMPLATES . '/app/organisms/list-of-slides.html.php';
     }
 }
 
@@ -99,16 +110,17 @@ if (($_GET['action'] ?? '') === 'create') {
         $title = sanitizeUserInput(($_POST['title'] ?? ''));
 
         if ($title === '') {
-            $form['fields']['title']['error'] = 'Field is required! Please provide a title for your presentation';
+            $form['fields']['title']['error']
+                = 'Field is required! Please provide a title for your presentation';
             $error = true;
         }
 
         if (!$error) {
             $folderName = date('YmdHis');
-            $presentationPath = __DIR__ . '/../slides/' . $folderName;
+            $presentationPath = DIR_SLIDES . DIRECTORY_SEPARATOR . $folderName;
 
             if ( ! mkdir($presentationPath) && ! is_dir($presentationPath)) {
-                throw new \RuntimeException(
+                throw new RuntimeException(
                     sprintf('Directory "%s" was not created', $presentationPath)
                 );
             }
@@ -125,26 +137,31 @@ if (($_GET['action'] ?? '') === 'create') {
         }
     }
 
-    $template = __DIR__ . '/../templates/app/organisms/create-presentation-form.html.php';
+    $template = DIR_TEMPLATES . '/app/organisms/create-presentation-form.html.php';
 }
 
 $paramPresentation = $_GET['presentation'] ?? '';
 
 if (($_GET['action'] ?? '') === 'presentation' && $paramPresentation !== '') {
-    $template     = __DIR__ . '/../templates/default/presentation.html.php';
-    $presentation = \App\Model\Presentation::findOne(urldecode($paramPresentation));
+    $template     = DIR_TEMPLATES . '/default/presentation.html.php';
+    $presentation = Presentation::findOne(urldecode($paramPresentation));
 
-    $content = file_get_contents(__DIR__ . '/../slides/' . $presentation->getFileName() . '/presentation.md');
-    $html    = \Michelf\Markdown::defaultTransform($content);
-    $dom     = new DOMDocument();
+    $content = file_get_contents(
+        DIR_SLIDES . DIRECTORY_SEPARATOR . $presentation->getFileName()
+        . '/presentation.md'
+    );
+    $html = Markdown::defaultTransform($content);
+    $dom = new DOMDocument();
     $dom->loadHTML($html);
-    $elements      = elementToObject($dom->documentElement)['children'][0]['children'];
+    $elements = elementToObject(
+        $dom->documentElement
+    )['children'][0]['children'];
     $elementsCount = count($elements);
-    $title         = array_filter($elements, static function ($element) {
+    $title = array_filter($elements, static function ($element) {
         return $element['tag'] === 'h1';
     });
-    $page          = [
-        'title'   => $title[0]['html'],
+    $page = [
+        'title' => $title[0]['html'],
         'content' => [],
     ];
     
