@@ -6,9 +6,11 @@
       </a>
     </h2>
   </header>
-  <?php if ($presentation->getImagePath() !== null) : ?>
   <figure class="slide-preview-image">
+    <?php if ($presentation->getImagePath() !== null) : ?>
     <img src="<?= $presentation->getImagePath() ?>" alt="Slide Vorschau">
+    <?php else : ?>
+    <img src="img/app/no-image.jpg" alt="Slide Vorschau">
+    <?php endif ?>
   </figure>
-  <?php endif ?>
 </section>
