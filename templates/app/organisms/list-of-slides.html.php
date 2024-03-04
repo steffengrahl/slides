@@ -10,6 +10,8 @@
                 Add new slide
             </h2>
         </header>
+      <div class="slide-preview-content">
         <a href="/index.php?action=create" class="btn btn-add"><span class="icon">&#43;</span></a>
+      </div>
     </section>
 </div>

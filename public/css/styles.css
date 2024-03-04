@@ -1,4 +1,4 @@
-/*@import "reset.css";*/
+@import "reset.css";
 /*@import "base_struct.css";*/
 /*@import "overview.css";*/
 
@@ -22,6 +22,11 @@ body {
 }
 .page-header {
     padding: 1em 0;
+}
+.page-title {
+    font-size: 2rem;
+    line-height: 1.25em;
+    font-weight: 600;
 }
 .page-title a {
     color: inherit;
@@ -91,6 +96,27 @@ form .btn {
     color: inherit;
     text-decoration: none;
 }
+.slide-preview-content {
+    position: relative;
+    overflow: hidden;
+}
+.slide-preview-actions {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -30%;
+    padding: .75em;
+    text-align: center;
+    background-color: #21212180
+}
+.slide-preview-actions .btn {
+    font-size: 2rem;
+    color: #C2C2C2;
+    margin-left: .5em;
+}
+.slide-preview-content:hover .slide-preview-actions {
+    bottom: 0;
+}
 .slide-preview-image {
     margin: 0;
     padding: 0;
@@ -101,12 +127,11 @@ form .btn {
     height: auto;
     object-fit: cover;
 }
-.slide-preview-box .btn {
+.slide-preview-box .btn-add {
     display: flex;
-    max-height: 100%;
-    background: red;
+    height: 100%;
 }
-.slide-preview-box .btn .icon {
+.slide-preview-box .btn-add .icon {
     display: inline-block;
     margin: auto;
     font-size: 8em;
