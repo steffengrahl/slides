@@ -1,3 +1,8 @@
+<?php if (isset($page['flashMessage'])) : ?>
+<div class="flash-message<?= ' ' . $page['flashMessage']['level'] ?>">
+  <?= $page['flashMessage']['message'] ?>
+</div>
+<?php endif ?>
 <div class="slides-list">
     <?php if (($presentations ?? []) !== []) : ?>
     <?php foreach ($presentations as $presentation) : ?>

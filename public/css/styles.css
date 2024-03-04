@@ -2,13 +2,17 @@
 /*@import "base_struct.css";*/
 /*@import "overview.css";*/
 
-* { box-sizing: border-box }
+* {
+    box-sizing: border-box
+}
+
 html {
     background-color: #F2F2F2;
     margin: 0;
     padding: 0;
     min-height: 100vh;
 }
+
 body {
     margin: 0;
     padding: 0;
@@ -20,26 +24,33 @@ body {
     margin-right: auto;
     min-height: 100vh;
 }
+
 .page-header {
     padding: 1em 0;
 }
+
 .page-title {
     font-size: 2rem;
     line-height: 1.25em;
     font-weight: 600;
 }
+
 .page-title a {
     color: inherit;
     text-decoration: none;
 }
+
 h1, h2 {
     margin: 0;
     padding: 0;
 }
+
 main {
     padding: 1.5em 0;
 }
-input {
+
+input,
+textarea {
     border: 1px solid #C2C2C2;
     border-radius: .15em;
     font-family: inherit;
@@ -47,10 +58,16 @@ input {
     padding: .1em .2em;
     width: 100%;
 }
+
+textarea {
+    resize: none;
+}
+
 label div {
     padding-left: .25em;
     padding-bottom: .1em;
 }
+
 .btn {
     display: inline-block;
     border: 1px solid #C2C2C2;
@@ -63,15 +80,18 @@ label div {
     font-size: 0.83333rem;
     padding: .1em .35em;
 }
+
 .btn-cta {
     border: 1px solid #212121;
     color: #F2F2F2;
     background-color: #212121;
 }
+
 form .btn {
     font-size: 1rem;
     padding: .15em .35em;
 }
+
 .slides-list {
     display: flex;
     flex-direction: row;
@@ -79,27 +99,35 @@ form .btn {
     justify-content: flex-start;
     gap: 2em 1em;
 }
+
 .slide-preview-box {
     border-top: 2px solid #212121;
     border-bottom: 2px solid #212121;
     flex-basis: calc(50% - .5em);
 }
+
 .slide-preview-box:last-child {
     flex-grow: 1;
     flex-shrink: 1;
 }
+
 .slide-preview-header {
     padding: .25em 0;
 }
-.slide-preview-title {}
+
+.slide-preview-title {
+}
+
 .slide-preview-title a {
     color: inherit;
     text-decoration: none;
 }
+
 .slide-preview-content {
     position: relative;
     overflow: hidden;
 }
+
 .slide-preview-actions {
     position: absolute;
     left: 0;
@@ -109,41 +137,76 @@ form .btn {
     text-align: center;
     background-color: #21212180
 }
+
 .slide-preview-actions .btn {
     font-size: 2rem;
     color: #C2C2C2;
     margin-left: .5em;
 }
+
 .slide-preview-content:hover .slide-preview-actions {
     bottom: 0;
 }
+
 .slide-preview-image {
     margin: 0;
     padding: 0;
 }
+
 .slide-preview-image img {
     display: block;
     max-width: 100%;
     height: auto;
     object-fit: cover;
 }
+
 .slide-preview-box .btn-add {
     display: flex;
     height: 100%;
 }
+
 .slide-preview-box .btn-add .icon {
     display: inline-block;
     margin: auto;
     font-size: 8em;
     color: #C2C2C2;
 }
+
 form .group {
     margin-bottom: .5em;
 }
+
 form .group-buttons {
     text-align: right;
 }
+
 form .group-buttons button {
     display: inline-block;
     margin-left: .5em;
+}
+
+form.edit-presentation textarea {
+    height: 37.5vh;
+}
+
+.flash-message {
+    margin: 1rem;
+    padding: 1em;
+    border: 2px solid;
+    border-radius: .15em;
+    font-size: .9rem;
+    font-style: italic;
+    font-weight: bold;
+}
+.flash-message.success {
+    border-color: green;
+    background-color: #00FF0050;
+}
+.flash-message.warning {
+    border-color: orange;
+    background-color: #FFA50050;
+}
+.flash-message.error {
+    border-color: red;
+    background-color: #FF000050;
 }

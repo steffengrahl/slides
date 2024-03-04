@@ -15,6 +15,74 @@ if (empty($_GET['presentation'])) {
     $presentations = \App\Model\Presentation::findAll();
 }
 
+if (($_GET['action'] ?? '') === 'edit') {
+    $presentationId = (int) sanitizeUserInput(($_GET['presentation'] ?? ''));
+    try {
+        $presentation = \App\Model\Presentation::findOne($presentationId);
+    } catch (Exception) {
+        $presentation = null;
+    }
+
+    if ($presentation !== null) {
+        $presentationText = file_get_contents(__DIR__ . '/../slides/' . $presentationId . '/presentation.md');
+        $form = [
+            'fields' => [
+                'presentation' => [
+                    'label' => 'Presentation',
+                    'value' => $presentationText,
+                    'error' => '',
+                    'required' => true,
+                ],
+            ],
+        ];
+
+        if (($_POST['btn-update'] ?? '0') === '1') {
+            $error = false;
+            $presentationText = sanitizeUserInput(($_POST['presentation'] ?? ''));
+
+            if ($presentationText === '') {
+                $form['fields']['presentation'] = [
+                    'error' => 'Field is required!',
+                    'value' => '',
+                ];
+                $error = true;
+            }
+
+            if (!$error) {
+                file_put_contents(__DIR__ . '/../slides/' . $presentationId . '/presentation.md', $presentationText);
+
+                $title = trim(
+                    substr(
+                        $presentationText, 0, strpos($presentationText, PHP_EOL)
+                    )
+                );
+                $config = \Symfony\Component\Yaml\Yaml::parseFile(
+                    __DIR__ . '/../slides/' . $presentationId . '/config.yaml'
+                );
+                $config['title'] = $title;
+                file_put_contents(
+                    __DIR__ . '/../slides/' . $presentationId . '/config.yaml',
+                    \Symfony\Component\Yaml\Yaml::dump($config)
+                );
+                header('Location: index.php');
+            }
+        }
+
+        $template = __DIR__ . '/../templates/app/organisms/edit-presentation-form.html.php';
+    } else {
+        $page = [
+            'flashMessage' => [
+                'level' => 'error',
+                'message' => sprintf(
+                    'Could not find presentation %s',
+                    $presentationId
+                ),
+            ]
+        ];
+        $template = __DIR__ . '/../templates/app/organisms/list-of-slides.html.php';
+    }
+}
+
 if (($_GET['action'] ?? '') === 'create') {
     $form = [
         'fields' => [
@@ -62,7 +130,7 @@ if (($_GET['action'] ?? '') === 'create') {
 
 $paramPresentation = $_GET['presentation'] ?? '';
 
-if ($paramPresentation !== '') {
+if (($_GET['action'] ?? '') === 'presentation' && $paramPresentation !== '') {
     $template     = __DIR__ . '/../templates/default/presentation.html.php';
     $presentation = \App\Model\Presentation::findOne(urldecode($paramPresentation));
 

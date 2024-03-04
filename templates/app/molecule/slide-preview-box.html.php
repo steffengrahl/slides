@@ -15,7 +15,7 @@
       <?php endif ?>
     </figure>
     <div class="slide-preview-actions">
-      <a href="?presentation=<?= urlencode($presentation->getFileName()) ?>" target="_blank" class="btn"><i class="fa-solid fa-person-chalkboard"></i></a><a href="?action=edit" class="btn"><i class="fa-solid fa-pen-to-square"></i></a>
+      <a href="?action=presentation&presentation=<?= urlencode($presentation->getFileName()) ?>" target="_blank" class="btn"><i class="fa-solid fa-person-chalkboard"></i></a><a href="?action=edit&presentation=<?= urlencode($presentation->getFileName()) ?>" class="btn"><i class="fa-solid fa-pen-to-square"></i></a>
     </div>
   </div>
 </section>
