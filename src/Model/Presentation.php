@@ -29,6 +29,8 @@ class Presentation
 
         $storage = array_diff(scandir(self::SLIDES_STORAGE), ['.', '..', '.gitkeep']);
 
+        rsort($storage);
+
         foreach ($storage as $item) {
             if (!is_dir(self::SLIDES_STORAGE . DIRECTORY_SEPARATOR . $item)) {
                 continue;
