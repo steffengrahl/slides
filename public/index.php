@@ -19,14 +19,15 @@ const BASE_TEMPLATE_PRESENTATION = DIR_TEMPLATES . '/default/base.html.php';
 include DIR_ROOT . '/vendor/autoload.php';
 
 $baseTemplateFilePath = BASE_TEMPLATE_APP;
+$request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
-if (empty($_GET['presentation'])) {
+if (!$request->query->has('presentation')) {
     $template      = DIR_TEMPLATES . '/app/organisms/list-of-slides.html.php';
     $presentations = Presentation::findAll();
 }
 
-if (($_GET['action'] ?? '') === 'edit') {
-    $presentationId = (int) sanitizeUserInput(($_GET['presentation'] ?? ''));
+if ($request->query->get('action', '') === 'edit') {
+    $presentationId = (int) sanitizeUserInput($request->query->get('presentation'));
     try {
         $presentation = Presentation::findOne($presentationId);
     } catch (Exception) {
@@ -47,9 +48,9 @@ if (($_GET['action'] ?? '') === 'edit') {
             ],
         ];
 
-        if (($_POST['btn-update'] ?? '0') === '1') {
+        if ($request->get('btn-update') === '1') {
             $error = false;
-            $presentationText = sanitizeUserInput(($_POST['presentation'] ?? ''));
+            $presentationText = sanitizeUserInput($request->get('presentation', ''));
 
             if ($presentationText === '') {
                 $form['fields']['presentation'] = [
@@ -75,7 +76,7 @@ if (($_GET['action'] ?? '') === 'edit') {
                 $config = Yaml::parseFile($configFilePath);
                 $config['title'] = $title;
                 file_put_contents($configFilePath, Yaml::dump($config));
-                header('Location: index.php');
+                (new \Symfony\Component\HttpFoundation\RedirectResponse('index.php'))->send();
             }
         }
 
@@ -94,7 +95,7 @@ if (($_GET['action'] ?? '') === 'edit') {
     }
 }
 
-if (($_GET['action'] ?? '') === 'create') {
+if ($request->query->get('action', '') === 'create') {
     $form = [
         'fields' => [
             'title' => [
@@ -105,9 +106,9 @@ if (($_GET['action'] ?? '') === 'create') {
         ],
     ];
 
-    if (($_POST['btn-create'] ?? '0') === '1') {
+    if ($request->get('btn-create', '0') === '1') {
         $error = false;
-        $title = sanitizeUserInput(($_POST['title'] ?? ''));
+        $title = sanitizeUserInput($request->get('title', ''));
 
         if ($title === '') {
             $form['fields']['title']['error']
@@ -133,16 +134,16 @@ if (($_GET['action'] ?? '') === 'create') {
                 $presentationPath . DIRECTORY_SEPARATOR . 'config.yaml',
                 'title: ' . $title . PHP_EOL . 'theme: ' . PHP_EOL
             );
-            header('Location: index.php');
+            (new \Symfony\Component\HttpFoundation\RedirectResponse('index.php'))->send();
         }
     }
 
     $template = DIR_TEMPLATES . '/app/organisms/create-presentation-form.html.php';
 }
 
-$paramPresentation = $_GET['presentation'] ?? '';
+$paramPresentation = $request->query->get('presentation', '');
 
-if (($_GET['action'] ?? '') === 'presentation' && $paramPresentation !== '') {
+if ($request->query->get('action', '') === 'presentation' &&  $paramPresentation !== '') {
     $template     = DIR_TEMPLATES . '/default/presentation.html.php';
     $presentation = Presentation::findOne(urldecode($paramPresentation));
 
@@ -203,11 +204,6 @@ if (($_GET['action'] ?? '') === 'presentation' && $paramPresentation !== '') {
 
 include $baseTemplateFilePath;
 
-/**
- * @param DOMElement $element
- *
- * @return array
- */
 function elementToObject(DOMElement $element): array
 {
     $obj = ["tag" => $element->tagName];
@@ -225,11 +221,6 @@ function elementToObject(DOMElement $element): array
     return $obj;
 }
 
-/**
- * @param $element
- *
- * @return bool
- */
 function isImage($element): bool
 {
     return isset($element['children'])
