@@ -8,6 +8,7 @@
     "michelf/php-markdown": "^1.9",
     "erusev/parsedown": "^1.7",
     "ext-dom": "*",
-    "symfony/yaml": "^7.0"
+    "symfony/yaml": "^7.0",
+    "symfony/http-foundation": "^7.0"
   }
 }

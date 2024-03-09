@@ -27,6 +27,6 @@
     </style>
 </head>
 <body>
-    <?php include $template ?>
+    <?php include \App\Configuration\DIR_TEMPLATES . $template ?>
 </body>
 </html>

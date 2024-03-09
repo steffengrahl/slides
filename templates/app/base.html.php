@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <title><?= $page['title'] ?? '' ?></title>
   <meta charset="UTF-8">
@@ -12,7 +12,7 @@
     </h1>
   </header>
   <main>
-<?php include $template ?>
+<?php include \App\Configuration\DIR_TEMPLATES . $template ?>
   </main>
   <script src="https://kit.fontawesome.com/1fd9e7b2d4.js" crossorigin="anonymous"></script>
 </body>
