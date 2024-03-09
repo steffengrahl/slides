@@ -21,7 +21,6 @@ require_once __DIR__ . '/../configuration.php';
 include DIR_ROOT . '/vendor/autoload.php';
 
 $request = Request::createFromGlobals();
-$request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
 if (!$request->query->has('presentation')) {
     $response = new Response(
@@ -180,9 +179,9 @@ if ($request->query->get('action', '') === 'create') {
             [
                 'template' => '/app/organisms/create-presentation-form.html.php',
                 'form' => $form,
-            ]
+            ],
         ),
-        Response::HTTP_OK
+        Response::HTTP_OK,
     );
 }
 
@@ -256,9 +255,9 @@ if (
                 'template' => '/default/presentation.html.php',
                 'page' => $page,
                 'slide' => $slide,
-            ]
+            ],
         ),
-        Response::HTTP_OK
+        Response::HTTP_OK,
     );
 }
 
