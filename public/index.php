@@ -21,6 +21,7 @@ require_once __DIR__ . '/../configuration.php';
 include DIR_ROOT . '/vendor/autoload.php';
 
 $request = Request::createFromGlobals();
+$request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
 if (!$request->query->has('presentation')) {
     $response = new Response(
