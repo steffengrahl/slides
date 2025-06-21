@@ -27,7 +27,7 @@ Sponsoring
 
 If this application was helpful to you, and you want to say "Thank You", you can buy me a coffee. <3
 
-<a href="https://www.buymeacoffee.com/webdevmentor" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 50px !important;width: 181px !important;" ></a>
+[PayPal me](https://paypal.me/steffengrahl)
 
 License
 ---
